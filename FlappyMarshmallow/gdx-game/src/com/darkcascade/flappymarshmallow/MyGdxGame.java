@@ -11,10 +11,9 @@ public class MyGdxGame implements ApplicationListener
 	Texture texture;
 	SpriteBatch batch;
 
-	ShapeRenderer _shapeRender;
 	OrthographicCamera _camera;
 
-	float[] _linePoints;
+	private GameRenderer _renderer;
 
 	@Override
 	public void create()
@@ -26,30 +25,24 @@ public class MyGdxGame implements ApplicationListener
 		_camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 		_camera.update();
 
-		_shapeRender = new ShapeRenderer();
-		_shapeRender.setProjectionMatrix(_camera.combined);
+		float sWidth = Gdx.graphics.getWidth();
+		float sHeight = Gdx.graphics.getHeight();
+		float gWidth = 136;
+		float gHeight = sHeight / (sWidth / gWidth);
 
-		_linePoints = new float[] { 100, 260, 160, 220, 220, 260 };
+		int midY = (int)(gHeight / 2);
+
+		GameWorld world = new GameWorld(midY);
+		_renderer = new GameRenderer();
+		_renderer.Initialize(world, (int)gHeight, midY);
+
+		Gdx.input.setInputProcessor(new InputHandler(world.GetBird()));
 	}
 
 	@Override
 	public void render()
-	{        
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glLineWidth(20);
-
-		batch.begin();
-
-		_shapeRender.begin(ShapeType.Line);
-		_shapeRender.setColor(0, 0, 0, 1);
-		_shapeRender.circle(160, 284, 100);
-		_shapeRender.circle(120, 314, 18);
-		_shapeRender.circle(200, 314, 18);
-		_shapeRender.polyline(_linePoints);
-		_shapeRender.end();
-
-		batch.end();
+	{
+		_renderer.Render(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
