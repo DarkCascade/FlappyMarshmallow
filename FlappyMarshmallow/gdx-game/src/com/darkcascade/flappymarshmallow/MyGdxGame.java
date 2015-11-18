@@ -3,6 +3,8 @@ package com.darkcascade.flappymarshmallow;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.*;
 
 public class MyGdxGame implements ApplicationListener
 {
@@ -12,18 +14,22 @@ public class MyGdxGame implements ApplicationListener
 	ShapeRenderer _shapeRender;
 	OrthographicCamera _camera;
 
+	float[] _linePoints;
+
 	@Override
 	public void create()
 	{
 		texture = new Texture(Gdx.files.internal("android.jpg"));
 		batch = new SpriteBatch();
 
-		_camera = new OrthographicCamera(Gdx.graphics.getWidth, Gdx.graphics.getHeight);
-		_camera.position.set(Gdx.graphics.getWidth/2, Gdx.graphics.getHeight/2, 0);
+		_camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		_camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
 		_camera.update();
 
 		_shapeRender = new ShapeRenderer();
 		_shapeRender.setProjectionMatrix(_camera.combined);
+
+		_linePoints = new float[] { 100, 260, 160, 220, 220, 260 };
 	}
 
 	@Override
@@ -40,7 +46,7 @@ public class MyGdxGame implements ApplicationListener
 		_shapeRender.circle(160, 284, 100);
 		_shapeRender.circle(120, 314, 18);
 		_shapeRender.circle(200, 314, 18);
-		_shapeRender.polyline(Array(100, 260, 160, 220, 220, 260.0f));
+		_shapeRender.polyline(_linePoints);
 		_shapeRender.end();
 
 		batch.end();
