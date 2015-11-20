@@ -22,10 +22,29 @@ public class Bird {
         if (_velocity.y > 200) _velocity.y = 200;
 
         _position.add(_velocity.cpy().scl(delta));
+
+        if (_velocity.y < 0) {
+            _rotation -= 600 * delta;
+
+            if (_rotation < -20) _rotation = -20;
+        }
+
+        if (isFalling()) {
+            _rotation += 480 * delta;
+            if (_rotation > 90) _rotation = 90;
+        }
     }
 
     public void Tap() {
         _velocity.y = -140;
+    }
+
+    public boolean isFalling() {
+        return _velocity.y > 110;
+    }
+
+    public boolean shouldFlap() {
+        return _velocity.y <= 70;
     }
 
     public float getX() { return _position.x; }
